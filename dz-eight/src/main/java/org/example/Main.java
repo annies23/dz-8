@@ -1,4 +1,7 @@
 package org.example;
+
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         Student student1 = new Student(1, "Емілі", "Вотсон");
@@ -11,6 +14,7 @@ public class Main {
         group.addStudent(student1);
         group.addStudent(student2);
         group.addStudent(student3);
+        group.addStudent(groupLead);
 
         group.addNewTask("Вивчити інкапсуляцію");
         group.addNewTask("Вивчити поліморфізм");
@@ -30,6 +34,14 @@ public class Main {
 
         String task2 = "Вивчити абстракцію";
         group.markTaskAsCompleted(task2, student1);
+
+        String task3 = "Вивчити інкапсуляцію";
+        group.markTaskAsCompleted(task3, student2);
+
+        List<Student> studentsCompletedTask = group.getStudentsWhoCompletedTask(task);
+        for (Student student : studentsCompletedTask) {
+            System.out.println(student.getStudentName() + " " + student.getStudentSurname());
+        }
 
         group.removeStudent(student3);
         System.out.println("Студенти: ");

@@ -1,12 +1,15 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StudentsGroup {
     private Student groupLead;
     private List<Student> students;
     private List<String> tasks;
+    Map<String, List<Student>> completedTasks = new HashMap<>();
 
     public StudentsGroup(Student groupLead) {
         this.groupLead = groupLead;
@@ -31,8 +34,12 @@ public class StudentsGroup {
         students.add(student);
     }
     public void removeStudent(Student student) {
-        System.out.println("Видалений студент: " + student.getStudentName() + " " + student.getStudentSurname());
-        students.remove(student);
+        if (student.equals(groupLead)) {
+            System.out.println("Група не може існувати без старости.");
+        } else {
+            System.out.println("Видалений студент: " + student.getStudentName() + " " + student.getStudentSurname());
+            students.remove(student);
+        }
     }
 
     public List<String> getTasks() {
@@ -45,9 +52,17 @@ public class StudentsGroup {
 
     public void markTaskAsCompleted(String task, Student student) {
         if (tasks.contains(task) && students.contains(student)) {
+            List<Student> taskCompletedByStudents = completedTasks.getOrDefault(task, new ArrayList<>());
+            taskCompletedByStudents.add(student);
+            completedTasks.put(task, taskCompletedByStudents);
             System.out.println(student.getStudentName() + " " + student.getStudentSurname() + " виконав(-ла) завдання: " + task);
         } else {
             System.out.println("Студент не виконав(-ла) завдання або невірно вказані дані");
         }
     }
+
+    public List<Student> getStudentsWhoCompletedTask(String task) {
+        return completedTasks.getOrDefault(task, new ArrayList<>());
+    }
 }
+
